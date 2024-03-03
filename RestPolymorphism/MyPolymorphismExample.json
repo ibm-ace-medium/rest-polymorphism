@@ -1,0 +1,90 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "PolymorphismExample",
+        "version": "1.0.0",
+        "description": "Polymorphism Example"
+    },
+    "servers": [
+        {
+            "url": "/polymorphism/v1"
+        }
+    ],
+    "paths": {
+        "/my-path": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MyResponseFromOpenApiJson"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MyRequestFromOpenApiJson"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "MyRequestFromOpenApiJson": {
+                "properties": {
+                    "myStringAttribute": {
+                        "type": "string"
+                    },
+                    "myStringWrapperAttribute": {
+                        "$ref": "#/components/schemas/MyStringWrapper"
+                    },
+                    "myPolymorphismAttribute": {
+                        "properties": {},	
+                        "oneOf": [
+                            {"$ref": "#/components/schemas/Nullable"},
+                            {
+                              "$ref": "#/components/schemas/MyStringWrapper"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/MyStringWrapper"
+                              }
+                            }
+                          ]
+                    }
+                }
+
+            },
+            "MyResponseFromOpenApiJson": {
+                "type": "object",
+                "properties": {
+                    "response": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MyStringWrapper": {
+                "type": "object",
+                "properties": {
+                    "myString": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Nullable": {
+                "nullable": true,
+                "type": "string"
+            } 
+        }
+    }
+}

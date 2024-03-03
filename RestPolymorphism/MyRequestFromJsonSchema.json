@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#", 
+	"title": "MyRequestFromJsonSchema",
+	"type": "object",
+	"properties": {
+		"myStringAttribute": {
+			"type": "string"
+		},
+		"myStringWrapperAttribute": {
+			"$ref": "#/definitions/MyStringWrapper"
+		},
+		"myPolymorphismAttribute": {
+			"properties": {},	
+			"oneOf": [
+				{"$ref": "#/definitions/Nullable"},
+			    {
+			      "$ref": "#/definitions/MyStringWrapper"
+			    },
+			    {
+			      "type": "array",
+			      "items": {
+			        "$ref": "#/definitions/MyStringWrapper"
+			      }
+			    }
+			  ]
+		}
+	},
+	"required": [
+		"myStringAttribute",
+		"myStringWrapperAttribute",
+		"myPolymorphismAttribute"
+	],
+	"additionalProperties": false,
+	
+	"definitions": {
+		"MyStringWrapper": {
+			"type": "object",
+			"properties": {
+				"myString": {
+					"type": "string" 
+				}
+			}
+		},
+		"Nullable": {
+            "type": ["null"]
+        } 
+	}
+}
